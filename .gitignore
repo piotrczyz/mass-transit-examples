@@ -1,0 +1,10 @@
+**/.vs
+**/obj
+**/bin
+**/.idea
+*.DotSettings.user
+**/*.cache
+**/.vscode
+**/*.jmx
+/ui/build
+node_modules
