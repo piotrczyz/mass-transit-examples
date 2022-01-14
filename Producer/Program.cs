@@ -4,7 +4,10 @@ using Messaging;
 using ProducerService;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.ConfigureMassTransit((context, configurator) =>
+
+var azureServiceBus = builder.Configuration.GetSection("Azure:ServiceBus").Get<AzureServiceBusConfiguration>();
+    
+builder.Services.ConfigureMassTransit(azureServiceBus.ConnectionString, (context, configurator) =>
 {
     EndpointConvention.Map<UpdateSomethingCommand>(new Uri($"queue:{QueueNames.CONSUMER_SERVICE_QUEUE}"));
 });

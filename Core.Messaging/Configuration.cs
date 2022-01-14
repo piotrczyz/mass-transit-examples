@@ -7,7 +7,7 @@ namespace Messaging;
 
 public static class Configuration
 {
-    public static void ConfigureMassTransit(this IServiceCollection services,  Action<IBusRegistrationContext, IBusFactoryConfigurator>? configure = null)
+    public static void ConfigureMassTransit(this IServiceCollection services, string busConnectionString,  Action<IBusRegistrationContext, IBusFactoryConfigurator>? configure = null)
     {
         services.AddMassTransit(x =>
         {
@@ -16,7 +16,7 @@ public static class Configuration
             
             // x.UsingRabbitMq((context, cfg) =>
             // {
-            //     cfg.Host("amqps://ottdsnro:8kfD7D5lWl0TVImWY_Rd50qbVHPiQsiW@kangaroo.rmq.cloudamqp.com/ottdsnro", h =>
+            //     cfg.Host(busConnectionString, h =>
             //     {
             //         h.UseSsl(s =>
             //         {
@@ -29,9 +29,7 @@ public static class Configuration
             
             x.UsingAzureServiceBus((context, cfg) =>
             {
-                cfg.Host("Endpoint=sb://bcc-platform-dev.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=emtA7tDam8ze+ZuqRjbC4/821rppk6Ci3JmpFVC/TIU=");
-                
-                
+                cfg.Host(busConnectionString);
                 configure?.Invoke(context, cfg);
             });
 

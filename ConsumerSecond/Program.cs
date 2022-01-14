@@ -3,7 +3,10 @@ using Messaging;
 using SecondConsumer.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.ConfigureMassTransit((context, configurator) =>
+
+var azureServiceBus = builder.Configuration.GetSection("Azure:ServiceBus").Get<AzureServiceBusConfiguration>();
+
+builder.Services.ConfigureMassTransit(azureServiceBus.ConnectionString, (context, configurator) =>
 {
     configurator.ReceiveEndpoint(QueueNames.SECOND_CONSUMER_SERVICE_QUEUE, cfg =>
     {
